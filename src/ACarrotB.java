@@ -13,6 +13,7 @@ public class ACarrotB {
         solve(27);
         solve(33);
         solve(43);
+        solve(47);
         solve(60);
     }
 
