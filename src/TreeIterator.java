@@ -59,6 +59,44 @@ public class TreeIterator {
         return current;
     }
 
+    static List<Node> getTreeInOrder(Node root){
+        if (root == null) return null;
+        List<Node> parents = new LinkedList<Node>();
+        Node cur = root;
+        while(cur.left != null) {
+            parents.add(cur);
+            cur = cur.left;
+        }
+        List<Node> result = new ArrayList<Node>();
+
+        while(true) {
+            result.add(cur);
+            Node next = null;
+
+            if (cur.right != null) {
+                parents.add(cur);
+                next = cur.right;
+                while(next.left != null) {
+                    parents.add(next);
+                    next = next.left;
+                }
+
+            } else {
+                while(next == null && !parents.isEmpty()) {
+                    Node parent = parents.remove(parents.size()-1);
+                    if (parent.right != cur) {
+                        next = parent;
+                    } else {
+                        cur = parent;
+                    }
+                }
+            }
+            if (next == null) break;
+            cur = next;
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         Node n20 = new Node(20);
         Node n60 = new Node(60);
@@ -80,7 +118,14 @@ public class TreeIterator {
 
         TreeIterator iter = new TreeIterator(root);
         while (iter.hasNext()) {
-            System.out.println(iter.next().value);
+            System.out.print(iter.next().value + " ");
+        }
+
+        System.out.println();
+
+        List<Node> treeInOrder = getTreeInOrder(root);
+        for (Node node : treeInOrder) {
+            System.out.print(node.value + " ");
         }
     }
 
